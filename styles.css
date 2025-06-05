@@ -24,11 +24,39 @@ body {
     color: white;
     padding: 4rem 0;
     text-align: center;
+    position: relative;
 }
 
 .hero-content {
     max-width: 600px;
     margin: 0 auto;
+    position: relative;
+}
+
+.hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(1px);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #231414d4
+    }
 }
 
 .hero-title {
@@ -42,7 +70,7 @@ body {
     font-size: 1.15rem;
     margin-bottom: 2rem;
     opacity: 0.9;
-    color: #ccc;
+    color: #e0e0e0;
 }
 
 .cta-button {
