@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+The purpose of this project is an HTML/CSS/JS based prototype, or demo for a client. It is called the "Zips Owner's Gallery" and is basically a place where people can browse images of vehicles that were purchased from Zips. The landing page should feature some intro title/text/design, a CTA to submit your photos, and then a grid of images.
+
+The image grid should be set up like a "masonry grid". At the top we should have categories listed of: 
+
+Carriers
+Light Duty
+Medium Duty
+Heavy Duty
+Service Bodies
+Company Albums
+
+On the top right, we should have a "Filter By" option that includes filtering by newest, oldest, owner name alphabetically. 
+
+We can borrow the UI from Dribbble.com for the categories and filters.
+
+Lets limit the grid to 30 items, and then at the bottom of the grid, let's have a "load more" button. 
+
+See the images folder for demo images. Create fake data for the trucks including information similar to this example:
+
+Owner:
+Phantom Towing LLC, Hayward, CA
+Truck:
+2024 Century 12 Series Steel Car Carrier, Hino L-6, #19760
+Sold Date:
+March 2025
+Sales Rep:
+Cole Schmitt
+If you have any questions or would like to build a truck like this sold unit, contact us!
+
+Call us: 800-222-6047
+
+When clicking an image in the grid, we should have a modal style element that comes up to show the full details, and swipe through additional images for that vehicle. (For the demo, we can just use the same image multiple times.)

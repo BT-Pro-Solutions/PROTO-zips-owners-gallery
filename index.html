@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zips Owner's Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Owner's Showcase</h1>
+                <p class="hero-description">
+                    <b>When you bring your experience and passion for the towing industry to Zip's, we can build something incredible.</b><br> Using the latest technology, custom-built features and endless options—your truck will be one of a kind. Some of the latest and greatest are displayed here in our Owner's Gallery. We would love you to share final pictures of your Zip's-built truck so that we can show them off to the world.
+                </p>
+                <button class="cta-button" onclick="openSubmitModal()">Submit Your Photos</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <!-- Company Filter Indicator -->
+            <div class="company-filter" id="companyFilter">
+                <span class="company-filter-text">Showing </span>
+                <span class="company-filter-name" id="companyFilterName"></span>
+                <button class="clear-filter-btn" onclick="clearCompanyFilter()" title="Clear filter">×</button>
+            </div>
+            
+            <!-- Categories and Filters -->
+            <div class="gallery-controls">
+                <!-- Top row: Sort and Filters -->
+                <div class="top-controls">
+                    <div class="sort-control">
+                        <select class="filter-select" id="sortFilter">
+                            <option value="newest">Popular</option>
+                            <option value="oldest">Recent</option>
+                            <option value="owner-az">Owner A-Z</option>
+                            <option value="owner-za">Owner Z-A</option>
+                        </select>
+                    </div>
+                    <div class="filters-control">
+                        <button class="filters-btn" id="filtersBtn">
+                            <svg class="filter-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 4H4M4 4C4 4.55228 4.44772 5 5 5C5.55228 5 6 4.55228 6 4M4 4C4 3.44772 4.44772 3 5 3C5.55228 3 6 3.44772 6 4M6 4H14M2 8H6M6 8C6 8.55228 6.44772 9 7 9C7.55228 9 8 8.55228 8 8M6 8C6 7.44772 6.44772 7 7 7C7.55228 7 8 7.44772 8 8M8 8H14M2 12H10M10 12C10 12.5523 10.4477 13 11 13C11.5523 13 12 12.5523 12 12M10 12C10 11.4477 10.4477 11 11 11C11.5523 11 12 11.4477 12 12M12 12H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters Panel (Initially Hidden) -->
+                <div class="filters-panel" id="filtersPanel">
+                    <div class="filter-group">
+                        <label>Year:</label>
+                        <select id="yearFilter">
+                            <option value="">All Years</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Location:</label>
+                        <select id="locationFilter">
+                            <option value="">All Locations</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Sales Rep:</label>
+                        <select id="salesRepFilter">
+                            <option value="">All Sales Reps</option>
+                        </select>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="clear-filters-btn" id="clearFiltersBtn">Clear All</button>
+                        <button class="apply-filters-btn" id="applyFiltersBtn">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Bottom row: Scrolling Categories -->
+                <div class="categories-container">
+                    <div class="categories-scroll">
+                        <div class="categories">
+                            <button class="category-btn active" data-category="all">Discover</button>
+                            <button class="category-btn" data-category="carriers">Carriers</button>
+                            <button class="category-btn" data-category="light-duty">Light Duty</button>
+                            <button class="category-btn" data-category="medium-duty">Medium Duty</button>
+                            <button class="category-btn" data-category="heavy-duty">Heavy Duty</button>
+                            <button class="category-btn" data-category="service-bodies">Service Bodies</button>
+                            <button class="category-btn" data-category="company-albums">Company Albums</button>
+                        </div>
+                        <div class="categories-fade-right"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Grid -->
+            <div class="masonry-grid" id="imageGrid">
+                <!-- Images will be dynamically loaded here -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-container">
+                <button class="load-more-btn" id="loadMoreBtn">Load More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <div class="modal-images">
+                    <div class="main-image">
+                        <img id="modalMainImage" src="" alt="">
+                        <button class="nav-btn prev-btn" onclick="prevImage()">&#8249;</button>
+                        <button class="nav-btn next-btn" onclick="nextImage()">&#8250;</button>
+                    </div>
+                    <div class="thumbnail-row">
+                        <div class="thumbnails" id="modalThumbnails">
+                            <!-- Thumbnails will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-details">
+                    <div class="vehicle-info">
+                        <h3 id="modalOwner"></h3>
+                        <div class="detail-row">
+                            <span class="label">Truck:</span>
+                            <span id="modalTruck"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Sold Date:</span>
+                            <span id="modalSoldDate"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Sales Rep:</span>
+                            <span id="modalSalesRep"></span>
+                        </div>
+                        <div class="contact-info">
+                            <p>If you have any questions or would like to build a truck like this sold unit, contact us!</p>
+                            <a href="tel:800-222-6047" class="phone-link"> 800-222-6047</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Photo Modal -->
+    <div class="modal" id="submitModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSubmitModal()">&times;</span>
+            <div class="submit-form">
+                <h2>Submit Your Vehicle Photos</h2>
+                <p>Share your Zips vehicle with our community!</p>
+                <form id="photoSubmitForm">
+                    <div class="form-group">
+                        <label for="ownerName">Owner/Company Name:</label>
+                        <input type="text" id="ownerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerLocation">Location:</label>
+                        <input type="text" id="ownerLocation" placeholder="City, State" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="truckDetails">Truck Details:</label>
+                        <textarea id="truckDetails" placeholder="e.g., 2024 Century 12 Series Steel Car Carrier, Hino L-6, #19760" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesRep">Sales Representative:</label>
+                        <input type="text" id="salesRep" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="carriers">Carriers</option>
+                            <option value="light-duty">Light Duty</option>
+                            <option value="medium-duty">Medium Duty</option>
+                            <option value="heavy-duty">Heavy Duty</option>
+                            <option value="service-bodies">Service Bodies</option>
+                            <option value="company-albums">Company Albums</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="photos">Photos:</label>
+                        <input type="file" id="photos" multiple accept="image/*" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Photos</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
