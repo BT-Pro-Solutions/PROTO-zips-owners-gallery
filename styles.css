@@ -672,14 +672,14 @@ body {
     opacity: 1;
 }
 
-.modal-details {
-    padding: 1rem 0;
-}
+
 
 .vehicle-info h3 {
     font-size: 1.5rem;
     color: #333;
     margin-bottom: 1rem;
+    line-height: 1.2em;
+    padding-right: 2rem;
 }
 
 .detail-row {
@@ -694,9 +694,8 @@ body {
 }
 
 .contact-info {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
+    border-top: 2px solid #e5e5e5;
+    padding-top: 1rem;
     margin-top: 2rem;
 }
 
@@ -835,6 +834,10 @@ body {
     .modal.show {
         align-items: flex-end;
         justify-content: center;
+    }
+
+    .modal-details {
+        padding: 1rem 0;
     }
     
     .modal-content {
@@ -1020,4 +1023,35 @@ body {
 
 .clear-company-filter:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+.share-btn {
+    background: #f8f9fa;
+    border: 2px solid #e5e5e5;
+    color: #666;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    width: fit-content;
+}
+
+.share-btn:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: white;
+}
+
+.share-btn:active {
+    transform: translateY(1px);
+}
+
+.share-btn svg {
+    flex-shrink: 0;
 } 

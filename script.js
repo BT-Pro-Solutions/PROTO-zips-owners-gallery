@@ -10,6 +10,7 @@ class VehicleGallery {
         this.currentCompany = null;
         this.currentModalIndex = 0;
         this.currentVehicleImages = [];
+        this.currentVehicle = null; // Added for sharing
         
         // Additional filters
         this.currentFilters = {
@@ -700,6 +701,7 @@ class VehicleGallery {
     openModal(vehicle) {
         this.currentVehicleImages = vehicle.images;
         this.currentModalIndex = 0;
+        this.currentVehicle = vehicle; // Store current vehicle for sharing
 
         document.getElementById('modalOwner').textContent = vehicle.owner;
         document.getElementById('modalTruck').textContent = vehicle.truck;
@@ -808,6 +810,11 @@ class VehicleGallery {
             e.preventDefault();
             this.handleSubmitForm();
         });
+
+        // Share button
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            this.shareVehicle();
+        });
     }
 
     resetAndFilter() {
@@ -901,6 +908,98 @@ class VehicleGallery {
                 img.style.height = `${this.filteredVehicles[index].imageHeight}px`;
             }
         });
+    }
+
+    async shareVehicle() {
+        if (!this.currentVehicle) return;
+
+        const shareData = {
+            title: `${this.currentVehicle.owner} - Zips Owner's Gallery`,
+            text: `Check out this ${this.currentVehicle.truck} from ${this.currentVehicle.owner}`,
+            url: window.location.href
+        };
+
+        try {
+            // Check if native Web Share API is supported
+            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                await navigator.share(shareData);
+            } else {
+                // Fallback to clipboard
+                await this.fallbackShare(shareData);
+            }
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                // User didn't cancel, try fallback
+                await this.fallbackShare(shareData);
+            }
+        }
+    }
+
+    async fallbackShare(shareData) {
+        const shareText = `${shareData.text}\n${shareData.url}`;
+        
+        try {
+            // Try to copy to clipboard
+            await navigator.clipboard.writeText(shareText);
+            this.showShareToast('Link copied to clipboard!');
+        } catch (error) {
+            // If clipboard fails, show manual copy option
+            this.showShareModal(shareText);
+        }
+    }
+
+    showShareToast(message) {
+        // Create and show a temporary toast notification
+        const toast = document.createElement('div');
+        toast.className = 'share-toast';
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            z-index: 3000;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Animate in
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+        });
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+
+    showShareModal(shareText) {
+        // Fallback modal for manual copying
+        const fallbackModal = document.createElement('div');
+        fallbackModal.className = 'modal';
+        fallbackModal.style.display = 'flex';
+        fallbackModal.innerHTML = `
+            <div class="modal-content" style="max-width: 400px; padding: 2rem;">
+                <h3 style="margin-bottom: 1rem;">Share Vehicle</h3>
+                <p style="margin-bottom: 1rem; color: #666;">Copy this link to share:</p>
+                <textarea readonly style="width: 100%; padding: 0.75rem; border: 2px solid #e5e5e5; border-radius: 8px; resize: none; font-family: monospace; font-size: 0.9rem;" rows="3">${shareText}</textarea>
+                <button onclick="this.closest('.modal').remove(); document.body.style.overflow = 'auto';" style="margin-top: 1rem; background: #dc2626; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">Close</button>
+            </div>
+        `;
+        
+        document.body.appendChild(fallbackModal);
+        fallbackModal.querySelector('textarea').select();
     }
 }
 
