@@ -300,7 +300,7 @@ class VehicleGallery {
             'Kevin Brown', 'Jessica Taylor', 'Mark Anderson', 'Ashley Miller', 'Brian Jones'
         ];
 
-        const categories = ['carriers', 'light-duty', 'medium-duty', 'heavy-duty', 'service-bodies'];
+        const categories = ['carriers', 'light-duty', 'heavy-duty', 'service-bodies'];
 
         // Generate fake vehicle data
         imageFiles.forEach((image, index) => {
@@ -326,6 +326,24 @@ class VehicleGallery {
         // Sort by newest first initially
         this.filteredVehicles = [...this.allVehicles];
         this.sortVehicles(this.filteredVehicles);
+        
+        // Migrate any medium-duty vehicles to heavy-duty
+        this.migrateMediumToHeavyDuty();
+    }
+
+    migrateMediumToHeavyDuty() {
+        this.allVehicles.forEach(vehicle => {
+            if (vehicle.category === 'medium-duty') {
+                vehicle.category = 'heavy-duty';
+            }
+        });
+        
+        // Update filtered vehicles as well
+        this.filteredVehicles.forEach(vehicle => {
+            if (vehicle.category === 'medium-duty') {
+                vehicle.category = 'heavy-duty';
+            }
+        });
     }
 
     generateTruckDetails(imageName) {
@@ -375,10 +393,11 @@ class VehicleGallery {
             return 'carriers';
         } else if (imageName.includes('light') || imageName.includes('2465') || imageName.includes('810cw')) {
             return 'light-duty';
-        } else if (imageName.includes('4024') || imageName.includes('20-ton')) {
-            return 'medium-duty';
+        } else if (imageName.includes('4024') || imageName.includes('20-ton') || imageName.includes('medium')) {
+            // Map all medium duty to heavy duty
+            return 'heavy-duty';
         } else {
-            const categories = ['carriers', 'light-duty', 'medium-duty', 'heavy-duty', 'service-bodies'];
+            const categories = ['carriers', 'light-duty', 'heavy-duty', 'service-bodies'];
             return categories[Math.floor(Math.random() * categories.length)];
         }
     }
